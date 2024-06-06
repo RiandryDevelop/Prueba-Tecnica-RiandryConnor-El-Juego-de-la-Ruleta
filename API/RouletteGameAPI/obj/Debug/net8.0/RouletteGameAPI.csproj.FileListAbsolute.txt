@@ -282,3 +282,4 @@ C:\Users\SHADD\OneDrive\Documentos\DEV PROJECTS\VUEJS WITH\.NET(C_Sharp)\Roulett
 C:\Users\SHADD\OneDrive\Documentos\DEV PROJECTS\VUEJS WITH\.NET(C_Sharp)\RouletteGameAPP\API\RouletteGameAPI\obj\Debug\net8.0\RouletteGameAPI.pdb
 C:\Users\SHADD\OneDrive\Documentos\DEV PROJECTS\VUEJS WITH\.NET(C_Sharp)\RouletteGameAPP\API\RouletteGameAPI\obj\Debug\net8.0\RouletteGameAPI.genruntimeconfig.cache
 C:\Users\SHADD\OneDrive\Documentos\DEV PROJECTS\VUEJS WITH\.NET(C_Sharp)\RouletteGameAPP\API\RouletteGameAPI\obj\Debug\net8.0\ref\RouletteGameAPI.dll
+C:\Users\SHADD\OneDrive\Documentos\DEV PROJECTS\VUEJS WITH\.NET(C_Sharp)\RouletteGameAPP\API\RouletteGameAPI\obj\Debug\net8.0\RouletteGameAPI.sourcelink.json

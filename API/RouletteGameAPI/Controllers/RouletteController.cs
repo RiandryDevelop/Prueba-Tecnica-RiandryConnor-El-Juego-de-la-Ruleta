@@ -6,20 +6,29 @@ namespace RouletteGameAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RouletteController : ControllerBase
+    public class RouletteController(DbrouletteGameContext context) : ControllerBase
     {
         private static readonly Random random = new();
-        private readonly DbrouletteGameContext _context;
+        private readonly DbrouletteGameContext _context = context;
 
-        public RouletteController(DbrouletteGameContext context)
+        [HttpPost("initialize")]
+        public async Task<ActionResult> InitializePlayer([FromBody] Player player)
         {
-            _context = context;
+            var existingPlayer = await _context.Players.FindAsync(player.Name);
+
+            if (existingPlayer != null)
+            {
+                existingPlayer.Balance += player.Balance;
+                await _context.SaveChangesAsync();
+                return Ok(existingPlayer);
+            }
+
+            _context.Players.Add(player);
+            await _context.SaveChangesAsync();
+            return Ok(player);
         }
 
-        /// <summary>
-        /// Gets a random number and color.
-        /// </summary>
-        /// <returns>A random number between 0 and 36 and a color (red, black, or green).</returns>
+
         [HttpGet("random")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult GetRandomNumberAndColor()
@@ -29,50 +38,74 @@ namespace RouletteGameAPI.Controllers
             return Ok(new { number, color });
         }
 
-        /// <summary>
-        /// Calculates the prize based on the user's bet.
-        /// </summary>
-        /// <param name="betRequest">The bet request.</param>
-        /// <returns>The prize, random number, and color.</returns>
         [HttpPost("bet")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> CalculatePrize([FromBody] BetRequest betRequest)
+        public async Task<ActionResult> PlaceBet([FromBody] BetRequest betRequest)
         {
+            var player = await _context.Players.FindAsync(betRequest.PlayerName);
+
+            if (player == null)
+            {
+                return NotFound("Player not found.");
+            }
+
+            var betType = await _context.BetTypes.FirstOrDefaultAsync(bt => bt.BetTypeId == betRequest.BetTypeId);
+            var betValue = await _context.BetValues.FirstOrDefaultAsync(bv => bv.BetValueId == betRequest.BetValueId && bv.BetTypeId == betRequest.BetTypeId);
+
+            if (betType == null || betValue == null)
+            {
+                return BadRequest("Invalid bet type or value.");
+            }
+
+            if (player.Balance < betRequest.Amount)
+            {
+                return BadRequest("Insufficient balance.");
+            }
+
             int number = random.Next(0, 37);
             string color = number == 0 ? "green" : (number % 2 == 0 ? "red" : "black");
 
             decimal prize = 0;
 
-            if (betRequest.BetType == "color" && betRequest.BetValue.ToLower() == color)
+            if (betType.Type == "Color")
             {
-                prize = betRequest.Amount / 2;
+                if (color == betValue.Value)
+                {
+                    prize = betRequest.Amount * 2;
+                }
             }
-            else if (betRequest.BetType == "evenodd" && (number % 2 == (betRequest.BetValue.ToLower() == "even" ? 0 : 1)))
+            else if (betType.Type == "Number")
             {
-                prize = betRequest.Amount;
+                if (number == Convert.ToInt32(betValue.Value))
+                {
+                    prize = betRequest.Amount * 36;
+                }
             }
-            else if (betRequest.BetType == "number" && betRequest.BetValue == number.ToString() && betRequest.Color.ToLower() == color)
+            else if (betType.Type == "Even")
             {
-                prize = betRequest.Amount * 3;
+                if (number % 2 == 0)
+                {
+                    prize = betRequest.Amount * 2;
+                }
             }
-            else
+            else if (betType.Type == "Odd")
+            {
+                if (number % 2 != 0)
+                {
+                    prize = betRequest.Amount * 2;
+                }
+            }
+
+            if (prize == 0)
             {
                 prize = -betRequest.Amount;
             }
 
-            var player = await _context.Players.FindAsync(betRequest.PlayerName);
-
-            if (player == null)
-            {
-                return NotFound();
-            }
-
             player.Balance += prize;
-            _context.Entry(player).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return Ok(new { prize, number, color });
+            return Ok(new { prize, number, color, newBalance = player.Balance });
         }
     }
 }
