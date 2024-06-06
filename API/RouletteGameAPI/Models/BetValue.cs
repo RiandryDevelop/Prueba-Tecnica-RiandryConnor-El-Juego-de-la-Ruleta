@@ -1,12 +1,12 @@
 ﻿namespace RouletteGameAPI.Models
 {
-    public partial class BetValue
+    public partial record BetValue
     {
-        public int BetValueId { get; set; }
-        public string Value { get; set; } = null!;
-        public int BetTypeId { get; set; }
-        public string? Color { get; set; } 
+        public int BetValueId { get; init; }
+        public string Value { get; init; } = null!;
+        public int BetTypeId { get; init; }
+        public string? Color { get; init; }
 
-        public virtual BetType BetType { get; set; } = null!;
+        public virtual BetType BetType { get; init; } = null!;
     }
 }
