@@ -6,6 +6,6 @@
         public int BetTypeId { get; set; }
         public int BetValueId { get; set; }
         public decimal Amount { get; set; }
-        public required string Color { get; set; }
+        public required string Color { get; set; } 
     }
 }

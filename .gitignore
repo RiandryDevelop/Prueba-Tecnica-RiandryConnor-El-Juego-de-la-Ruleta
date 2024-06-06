@@ -1,0 +1,84 @@
+# .NET Ignorar Archivos Binarios y de Configuración
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.config
+*.log
+*.vs/
+.vscode/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignorar Archivos Temporales de Visual Studio
+.vs/
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Ignorar Paquetes de NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignorar Archivos de Publicación
+.publish/
+.publish_output/
+
+# Ignorar Archivos de Usuario de Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignorar Archivos de LocalDB
+*.mdf
+*.ldf
+
+# Vue Ignorar Archivos y Carpetas
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/*.local
+
+# Ignorar Archivos de Dependencias de Vue
+*.env.local
+*.env.*.local
+
+# Ignorar Archivos de Configuración de Herramientas
+.vscode/
+.idea/
+.DS_Store
+
+# Ignorar Archivos de Build de Vue
+build/
+config/
+coverage/
+
+# Ignorar Archivos de Test
+test/unit/coverage/
+test/e2e/reports/
+
+# Ignorar Archivos Temporales
+*.swp
+*.swo
+*.tmp
+
+# Ignorar Archivos Log
+*.log
+
+# Ignorar Archivos de Configuración de Sistema Operativo
+Thumbs.db
+.DS_Store
+
+# Ignorar Archivos de Editor
+*.code-workspace

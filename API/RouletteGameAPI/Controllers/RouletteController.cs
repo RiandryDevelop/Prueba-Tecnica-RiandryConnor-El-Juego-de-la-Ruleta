@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RouletteGameAPI.Models;
+using System.Threading.Tasks;
 
 namespace RouletteGameAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RouletteController(DbrouletteGameContext context) : ControllerBase
+    public class RouletteController : ControllerBase
     {
         private static readonly Random random = new();
-        private readonly DbrouletteGameContext _context = context;
+        private readonly DbrouletteGameContext _context;
+
+        public RouletteController(DbrouletteGameContext context)
+        {
+            _context = context;
+        }
 
         [HttpPost("initialize")]
         public async Task<ActionResult> InitializePlayer([FromBody] Player player)
@@ -27,7 +33,6 @@ namespace RouletteGameAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok(player);
         }
-
 
         [HttpGet("random")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -50,8 +55,8 @@ namespace RouletteGameAPI.Controllers
                 return NotFound("Player not found.");
             }
 
-            var betType = await _context.BetTypes.FirstOrDefaultAsync(bt => bt.BetTypeId == betRequest.BetTypeId);
-            var betValue = await _context.BetValues.FirstOrDefaultAsync(bv => bv.BetValueId == betRequest.BetValueId && bv.BetTypeId == betRequest.BetTypeId);
+            var betType = await _context.BetType.FirstOrDefaultAsync(bt => bt.BetTypeId == betRequest.BetTypeId);
+            var betValue = await _context.BetValue.FirstOrDefaultAsync(bv => bv.BetValueId == betRequest.BetValueId && bv.BetTypeId == betRequest.BetTypeId);
 
             if (betType == null || betValue == null)
             {
@@ -72,28 +77,28 @@ namespace RouletteGameAPI.Controllers
             {
                 if (color == betValue.Value)
                 {
-                    prize = betRequest.Amount * 2;
+                    prize = betRequest.Amount * 1.5m; // Correct prize for color bet
                 }
             }
-            else if (betType.Type == "Number")
+            else if (betType.Type == "NumberAndColor")
             {
-                if (number == Convert.ToInt32(betValue.Value))
+                if (number == Convert.ToInt32(betValue.Value) && color == betRequest.Color)
                 {
-                    prize = betRequest.Amount * 36;
+                    prize = betRequest.Amount * 4; // Correct prize for number and color bet
                 }
             }
-            else if (betType.Type == "Even")
+            else if (betType.Type == "Even" && betRequest.Color == betValue.Color)
             {
                 if (number % 2 == 0)
                 {
-                    prize = betRequest.Amount * 2;
+                    prize = betRequest.Amount * 2; // Correct prize for even bet
                 }
             }
-            else if (betType.Type == "Odd")
+            else if (betType.Type == "Odd" && betRequest.Color == betValue.Color)
             {
                 if (number % 2 != 0)
                 {
-                    prize = betRequest.Amount * 2;
+                    prize = betRequest.Amount * 2; // Correct prize for odd bet
                 }
             }
 
@@ -103,6 +108,18 @@ namespace RouletteGameAPI.Controllers
             }
 
             player.Balance += prize;
+
+            // Guardar la apuesta en la tabla BetValue
+            var newBetValue = new BetValue
+            {
+                BetTypeId = betRequest.BetTypeId,
+                Value = betValue.Value,
+                Color = betRequest.Color
+            };
+
+            _context.BetValue.Add(newBetValue);
+            await _context.SaveChangesAsync();
+
             await _context.SaveChangesAsync();
 
             return Ok(new { prize, number, color, newBalance = player.Balance });
