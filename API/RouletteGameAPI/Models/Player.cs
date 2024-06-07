@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RouletteGameAPI.Models;
+﻿namespace RouletteGameAPI.Models;
 
 public partial class Player
 {
