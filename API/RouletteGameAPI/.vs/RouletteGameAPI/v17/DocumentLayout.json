@@ -30,8 +30,8 @@
               "Title": "Player.cs",
               "DocumentMoniker": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\Models\\Player.cs",
               "RelativeDocumentMoniker": "Models\\Player.cs",
-              "ToolTip": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\Models\\Player.cs*",
-              "RelativeToolTip": "Models\\Player.cs*",
+              "ToolTip": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\Models\\Player.cs",
+              "RelativeToolTip": "Models\\Player.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-06T23:13:56.771Z",
@@ -47,8 +47,7 @@
               "RelativeToolTip": "Controllers\\PlayerController.cs",
               "ViewState": "AQIAACAAAAAAAAAAAAAIwDIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-06T23:11:30.479Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-06T23:11:30.479Z"
             }
           ]
         }
