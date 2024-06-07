@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|c:\\users\\shadd\\onedrive\\documentos\\dev projects\\vuejs with\\.net(c_sharp)\\roulettegameapp\\api\\roulettegameapi\\models\\betrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|solutionrelative:models\\betrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|c:\\users\\shadd\\onedrive\\documentos\\dev projects\\vuejs with\\.net(c_sharp)\\roulettegameapp\\api\\roulettegameapi\\models\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|solutionrelative:models\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|c:\\users\\shadd\\onedrive\\documentos\\dev projects\\vuejs with\\.net(c_sharp)\\roulettegameapp\\api\\roulettegameapi\\models\\dbroulettegamecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|solutionrelative:models\\dbroulettegamecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|c:\\users\\shadd\\onedrive\\documentos\\dev projects\\vuejs with\\.net(c_sharp)\\roulettegameapp\\api\\roulettegameapi\\models\\betrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|solutionrelative:models\\betrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C615CA4C-8BC8-4240-9D8D-BED746D460A4}|RouletteGameAPI.csproj|c:\\users\\shadd\\onedrive\\documentos\\dev projects\\vuejs with\\.net(c_sharp)\\roulettegameapp\\api\\roulettegameapi\\controllers\\roulettecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -26,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,7 +34,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Player.cs",
               "DocumentMoniker": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\Models\\Player.cs",
               "RelativeDocumentMoniker": "Models\\Player.cs",
@@ -47,7 +47,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "DbrouletteGameContext.cs",
               "DocumentMoniker": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\Models\\DbrouletteGameContext.cs",
               "RelativeDocumentMoniker": "Models\\DbrouletteGameContext.cs",
@@ -55,18 +55,17 @@
               "RelativeToolTip": "Models\\DbrouletteGameContext.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-07T00:58:59.108Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-07T00:58:59.108Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "BetRequest.cs",
               "DocumentMoniker": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\Models\\BetRequest.cs",
               "RelativeDocumentMoniker": "Models\\BetRequest.cs",
               "ToolTip": "C:\\Users\\SHADD\\OneDrive\\Documentos\\DEV PROJECTS\\VUEJS WITH\\.NET(C_Sharp)\\RouletteGameAPP\\API\\RouletteGameAPI\\Models\\BetRequest.cs",
               "RelativeToolTip": "Models\\BetRequest.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-07T00:58:54.894Z",
               "EditorCaption": ""
@@ -81,8 +80,7 @@
               "RelativeToolTip": "Controllers\\RouletteController.cs",
               "ViewState": "AQIAAGsAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-07T00:56:56.214Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-07T00:56:56.214Z"
             }
           ]
         }
