@@ -1,0 +1,74 @@
+# .NET specific
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.config
+*.log
+*.vs/
+.vscode/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio specific
+.vs/
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Publish
+.publish/
+.publish_output/
+
+# User-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# LocalDB
+*.mdf
+*.ldf
+
+# Vue.js specific
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/*.local
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# IDE specific
+.idea/
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
