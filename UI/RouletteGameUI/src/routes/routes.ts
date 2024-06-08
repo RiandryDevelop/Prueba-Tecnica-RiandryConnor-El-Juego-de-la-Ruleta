@@ -5,8 +5,8 @@ import HomePage from '../components/HomeComponents/HomePage.vue';
 import RouletteAPP from '../components/RouletteGameComponents/RouletteAPP.vue';
 
 const routes: Array<RouteRecordRaw> = [
-  { path: '/', component: HomePage },
-  { path: '/roulette', component: RouletteAPP },
+  { path: '/', name: 'home', component: HomePage },
+  { path: '/roulette', name: 'roulette', component: RouletteAPP },
 ];
 
 const router = createRouter({

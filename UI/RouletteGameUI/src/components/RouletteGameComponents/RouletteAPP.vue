@@ -1,3 +1,7 @@
+<script setup>
+import RouletteForm from './RouletteForm.vue';
+import SpinnerRoulette from './SpinnerRoulette.vue';
+</script>
 <template>
   <div class="gameScreen">
     <SpinnerRoulette />
@@ -5,27 +9,5 @@
   </div>
 </template>
 
-<script>
-import RouletteForm from './RouletteForm.vue';
-import SpinnerRoulette from './SpinnerRoulette.vue';
-
-export default {
-  data() {
-  },
-  methods: {
-  mounted() {
-  }
-}
-};
-</script>
-
-<style scoped lang="css">
-.gameScreen{
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   flex-direction: column;
-   height: 100vh;
-   width: 100vw;
-}
+<style scoped lang="css" src="./RouletteApp.css">
 </style>

@@ -5,14 +5,5 @@ import FormLogin from '../HomeComponents/FormLogin.vue';
     <template>
         <FormLogin />
     </template>
-  
-  <script>
-  export default {
-    data() {
-    },
-    methods: {
-      }
-    }
-  </script>
-  
+
   

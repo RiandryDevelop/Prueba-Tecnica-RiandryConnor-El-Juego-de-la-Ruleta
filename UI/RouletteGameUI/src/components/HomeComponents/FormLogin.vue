@@ -27,8 +27,6 @@
     },
     methods: {
       submitForm() {
-        // Aquí puedes realizar alguna acción con los datos enviados
-        console.log('Data submited:', this.formData);
         // Por ejemplo, puedes enviar los datos a través de una petición HTTP
         // fetch('/url-de-tu-api', {
         //   method: 'POST',

@@ -5,8 +5,6 @@
         <td id="1" @click="putmoney">1</td>
         <td id="2" @click="putmoney">2</td>
         <td id="3" @click="putmoney">3</td>
-        <td id="40" rowspan="4">1st 12</td>
-        <td id="43" rowspan="2">1 to 18</td>
       </tr>
       <tr>
         <td id="4" @click="putmoney">4</td>
@@ -17,7 +15,6 @@
         <td id="7" @click="putmoney">7</td>
         <td id="8" @click="putmoney">8</td>
         <td id="9" @click="putmoney">9</td>
-        <td id="46" rowspan="2">EVEN</td>
       </tr>
       <tr>
         <td id="10" @click="putmoney">10</td>
@@ -28,8 +25,7 @@
         <td id="13" @click="putmoney">13</td>
         <td id="14" @click="putmoney">14</td>
         <td id="15" @click="putmoney">15</td>
-        <td id="41" rowspan="4">2nd 12</td>
-        <td id="44" rowspan="2">19 to 36</td>
+        <td id="46" @click="putmoney" rowspan="2">EVEN</td>
       </tr>
       <tr>
         <td id="16" @click="putmoney">16</td>
@@ -40,7 +36,7 @@
         <td id="19" @click="putmoney">19</td>
         <td id="20" @click="putmoney">20</td>
         <td id="21" @click="putmoney">21</td>
-        <td id="47" rowspan="2">ODD</td>
+        <td id="47" @click="putmoney" rowspan="2">ODD</td>
       </tr>
       <tr>
         <td id="22" @click="putmoney">22</td>
@@ -51,8 +47,7 @@
         <td id="25" @click="putmoney">25</td>
         <td id="26" @click="putmoney">26</td>
         <td id="27" @click="putmoney">27</td>
-        <td id="42" rowspan="4">3rd 12</td>
-        <td id="45" rowspan="2">RED</td>
+        <td id="45" @click="putmoney" rowspan="2">RED</td>
       </tr>
       <tr>
         <td id="28" @click="putmoney">28</td>
@@ -63,7 +58,7 @@
         <td id="31" @click="putmoney">31</td>
         <td id="32" @click="putmoney">32</td>
         <td id="33" @click="putmoney">33</td>
-        <td id="48" rowspan="2">BLACK</td>
+        <td id="48" @click="putmoney" rowspan="2">BLACK</td>
       </tr>
       <tr>
         <td id="34" @click="putmoney">34</td>
@@ -71,9 +66,6 @@
         <td id="36" @click="putmoney">36</td>
       </tr>
       <tr>
-        <td id="37" @click="putmoney">2 to 1</td>
-        <td id="38" @click="putmoney">2 to 1</td>
-        <td id="39" @click="putmoney">2 to 1</td>
         <td id="money" colspan="2">You Have {{ total }}$</td>
       </tr>
     </table>
@@ -85,15 +77,56 @@ export default {
   methods: {
     putmoney(event) {
       const td = event.target;
-      if (td.className !== "in") {
-        td.bgColor = "gray";
-        td.className = "in";
-        this.total += 10;
-      } else {
+      const id = td.id;
+
+      // Check if cell is already selected
+      if (td.className === "in") {
         td.bgColor = "#B2E0F0";
         td.className = "";
         this.total -= 10;
+
+        if (!isNaN(id)) {
+          this.selectedNumbers.delete(id);
+        } else {
+          this.selectedSpecial.delete(id);
+        }
+
+        return;
       }
+
+      // Rules for numeric cells (0-36)
+      if (!isNaN(id)) {
+        if (this.selectedNumbers.size < 1) {
+          td.bgColor = "gray";
+          td.className = "in";
+          this.total += 10;
+          this.selectedNumbers.add(id);
+        } else {
+          alert("Only one number can be selected at a time.");
+        }
+      } else {
+        // Rules for special cells (RED, BLACK, EVEN, ODD)
+        if (this.selectedNumbers.size === 1) {
+          if (id === "EVEN" || id === "ODD") {
+            if (this.selectedSpecial.size === 0 || this.selectedSpecial.has("RED") || this.selectedSpecial.has("BLACK")) {
+              td.bgColor = "gray";
+              td.className = "in";
+              this.total += 10;
+              this.selectedSpecial.add(id);
+            } else {
+              alert("You can only select RED or BLACK after selecting EVEN or ODD.");
+            }
+          } else if (id === "RED" || id === "BLACK") {
+            td.bgColor = "gray";
+            td.className = "in";
+            this.total += 10;
+            this.selectedSpecial.add(id);
+          }
+        } else {
+          alert("Select a number first before choosing RED, BLACK, EVEN, or ODD.");
+        }
+      }
+
       this.checkwin();
     },
     checkwin() {
@@ -117,7 +150,9 @@ export default {
   },
   data() {
     return {
-      total: 1000
+      total: 1000,
+      selectedNumbers: new Set(),
+      selectedSpecial: new Set()
     };
   }
 };
