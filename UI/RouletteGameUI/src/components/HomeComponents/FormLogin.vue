@@ -16,6 +16,7 @@
   </template>
   
   <script>
+  const apiUrl = import.meta.env.VITE_API_URL;
   export default {
     data() {
       return {
@@ -28,20 +29,20 @@
     methods: {
       submitForm() {
         // Por ejemplo, puedes enviar los datos a través de una petición HTTP
-        // fetch('/url-de-tu-api', {
-        //   method: 'POST',
-        //   body: JSON.stringify(this.formData),
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   }
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //   console.log('Respuesta del servidor:', data);
-        // })
-        // .catch(error => {
-        //   console.error('Error al enviar los datos:', error);
-        // });
+        fetch(`${apiUrl}/api/Roulette/initialize`, {
+          method: 'POST',
+          body: JSON.stringify(this.formData),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Respuesta del servidor:', data);
+        })
+        .catch(error => {
+          console.error('Error al enviar los datos:', error);
+        });
         this.$router.push('/roulette');
       }
     }
@@ -49,7 +50,6 @@
   </script>
   
   <style scoped>
-  /* Estilos específicos del componente */
   h2 {
     margin-bottom: 10px;
   }
@@ -60,7 +60,7 @@
   input[type="text"],
   input[type="number"],
   textarea {
-    width: 100%;
+    width: 50vw;
     padding: 5px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
