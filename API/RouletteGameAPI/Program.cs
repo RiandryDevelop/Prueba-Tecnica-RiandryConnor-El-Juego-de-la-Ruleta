@@ -9,6 +9,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DbrouletteGameContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("New Policy",
+        app => app.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
+
 // Add Swagger services
 builder.Services.AddSwaggerGen(c =>
 {
@@ -40,6 +49,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Use CORS policy
+app.UseCors("New Policy");
 
 app.UseAuthorization();
 
