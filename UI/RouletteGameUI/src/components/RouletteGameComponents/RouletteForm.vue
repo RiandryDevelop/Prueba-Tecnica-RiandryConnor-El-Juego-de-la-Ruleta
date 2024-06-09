@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script>
+<script >
 export default {
   props: ["player", "balance"],
   data() {
