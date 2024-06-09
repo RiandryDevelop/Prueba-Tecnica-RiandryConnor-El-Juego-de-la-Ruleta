@@ -1,72 +1,23 @@
+<!-- RouletteForm.vue -->
 <template>
   <div id="game">
     <table bgcolor="white" width="400" height="500">
-      <tr>
-        <td id="1" @click="putmoney">1</td>
-        <td id="2" @click="putmoney">2</td>
-        <td id="3" @click="putmoney">3</td>
+      <tr v-for="row in grid" :key="row[0]">
+        <td v-for="cell in row" :key="cell" :id="cell" @click="putmoney(cell)">
+          {{ cell }}
+        </td>
       </tr>
       <tr>
-        <td id="4" @click="putmoney">4</td>
-        <td id="5" @click="putmoney">5</td>
-        <td id="6" @click="putmoney">6</td>
-      </tr>
-      <tr>
-        <td id="7" @click="putmoney">7</td>
-        <td id="8" @click="putmoney">8</td>
-        <td id="9" @click="putmoney">9</td>
-      </tr>
-      <tr>
-        <td id="10" @click="putmoney">10</td>
-        <td id="11" @click="putmoney">11</td>
-        <td id="12" @click="putmoney">12</td>
-      </tr>
-      <tr>
-        <td id="13" @click="putmoney">13</td>
-        <td id="14" @click="putmoney">14</td>
-        <td id="15" @click="putmoney">15</td>
-        <td id="46" @click="putmoney" rowspan="2">EVEN</td>
-      </tr>
-      <tr>
-        <td id="16" @click="putmoney">16</td>
-        <td id="17" @click="putmoney">17</td>
-        <td id="18" @click="putmoney">18</td>
-      </tr>
-      <tr>
-        <td id="19" @click="putmoney">19</td>
-        <td id="20" @click="putmoney">20</td>
-        <td id="21" @click="putmoney">21</td>
-        <td id="47" @click="putmoney" rowspan="2">ODD</td>
-      </tr>
-      <tr>
-        <td id="22" @click="putmoney">22</td>
-        <td id="23" @click="putmoney">23</td>
-        <td id="24" @click="putmoney">24</td>
-      </tr>
-      <tr>
-        <td id="25" @click="putmoney">25</td>
-        <td id="26" @click="putmoney">26</td>
-        <td id="27" @click="putmoney">27</td>
-        <td id="45" @click="putmoney" rowspan="2">RED</td>
-      </tr>
-      <tr>
-        <td id="28" @click="putmoney">28</td>
-        <td id="29" @click="putmoney">29</td>
-        <td id="30" @click="putmoney">30</td>
-      </tr>
-      <tr>
-        <td id="31" @click="putmoney">31</td>
-        <td id="32" @click="putmoney">32</td>
-        <td id="33" @click="putmoney">33</td>
-        <td id="48" @click="putmoney" rowspan="2">BLACK</td>
-      </tr>
-      <tr>
-        <td id="34" @click="putmoney">34</td>
-        <td id="35" @click="putmoney">35</td>
-        <td id="36" @click="putmoney">36</td>
-      </tr>
-      <tr>
-        <td id="money" colspan="2">You Have {{ total }}$</td>
+        <td id="money" colspan="4">{{ player }} You Have {{ balance}}$</td>
+        <td id="bet" colspan="4">
+          <label for="bet">
+            <input type="number" name="bet" id="betInput" v-model.number="betAmount" :max="balance" />
+          </label>
+        </td>
+        <td colspan="4">
+          <button @click="saveBalance('continue')">Continue</button>
+          <button @click="saveBalance('continueAndSave')">Continue and Save</button>
+        </td>
       </tr>
     </table>
   </div>
@@ -74,86 +25,114 @@
 
 <script>
 export default {
+  props: ["player", "balance"],
+  data() {
+    return {
+      grid: [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [10, 11, 12],
+        [13, 14, 15, "EVEN"],
+        [16, 17, 18],
+        [19, 20, 21, "ODD"],
+        [22, 23, 24],
+        [25, 26, 27, "RED"],
+        [28, 29, 30],
+        [31, 32, 33, "BLACK"],
+        [34, 35, 36]
+      ],      
+      selected: [],
+      betAmount: 0
+    };
+  },
   methods: {
-    putmoney(event) {
-      const td = event.target;
-      const id = td.id;
+    putmoney(cell) {
+      if (!this.betAmount) return;
 
-      // Check if cell is already selected
-      if (td.className === "in") {
-        td.bgColor = "#B2E0F0";
-        td.className = "";
-        this.total -= 10;
+      const isNumber = !isNaN(cell);
+      const isEvenOrOdd = cell === "EVEN" || cell === "ODD";
+      const isColor = cell === "RED" || cell === "BLACK";
 
-        if (!isNaN(id)) {
-          this.selectedNumbers.delete(id);
-        } else {
-          this.selectedSpecial.delete(id);
-        }
-
+      // Handle deselection
+      if (this.selected.includes(cell)) {
+        this.selected = this.selected.filter(c => c !== cell);
+        this.total += parseInt(this.betAmount);
+        this.updateCellStyle(cell, "");
         return;
       }
 
-      // Rules for numeric cells (0-36)
-      if (!isNaN(id)) {
-        if (this.selectedNumbers.size < 1) {
-          td.bgColor = "gray";
-          td.className = "in";
-          this.total += 10;
-          this.selectedNumbers.add(id);
-        } else {
-          alert("Only one number can be selected at a time.");
-        }
+      // Apply selection rules
+      if (isNumber && !this.selected.some(sel => !isNaN(sel))) {
+        this.selected.push(cell);
+        this.total -= parseInt(this.betAmount);
+        this.updateCellStyle(cell, "gray");
+      } else if (isEvenOrOdd && !this.selected.some(sel => sel === "EVEN" || sel === "ODD") && !this.selected.some(sel => !isNaN(sel))) {
+        this.selected.push(cell);
+        this.total -= parseInt(this.betAmount);
+        this.updateCellStyle(cell, "gray");
+      } else if (isColor && this.selected.some(sel => sel === "EVEN" || sel === "ODD" || !isNaN(sel))) {
+        this.selected.push(cell);
+        this.total -= parseInt(this.betAmount);
+        this.updateCellStyle(cell, "gray");
       } else {
-        // Rules for special cells (RED, BLACK, EVEN, ODD)
-        if (this.selectedNumbers.size === 1) {
-          if (id === "EVEN" || id === "ODD") {
-            if (this.selectedSpecial.size === 0 || this.selectedSpecial.has("RED") || this.selectedSpecial.has("BLACK")) {
-              td.bgColor = "gray";
-              td.className = "in";
-              this.total += 10;
-              this.selectedSpecial.add(id);
-            } else {
-              alert("You can only select RED or BLACK after selecting EVEN or ODD.");
-            }
-          } else if (id === "RED" || id === "BLACK") {
-            td.bgColor = "gray";
-            td.className = "in";
-            this.total += 10;
-            this.selectedSpecial.add(id);
-          }
-        } else {
-          alert("Select a number first before choosing RED, BLACK, EVEN, or ODD.");
-        }
+        alert("Invalid selection. Please follow the rules.");
       }
 
-      this.checkwin();
+      this.checkWin();
     },
-    checkwin() {
-      let answer = Math.floor(Math.random() * 37); // Número aleatorio entre 0 y 36
-      if (answer !== 0 && answer !== "00") {
-        for (let i = 1; i <= 36; i++) {
-          if (document.getElementById(i).className === "in") {
-            if (parseInt(document.getElementById(i).innerHTML) === answer) {
-              this.total += 350; // Ganancia neta (360 de pago menos 10 de apuesta)
-            } else {
-              this.total -= 10;
-            }
+    updateCellStyle(cell, color) {
+      const element = document.getElementById(cell);
+      if (element) {
+        element.style.backgroundColor = color;
+      }
+    },
+    checkWin() {
+      const winningNumber = Math.floor(Math.random() * 37);
+      const winningColor = winningNumber % 2 === 0 ? "RED" : "BLACK";
+
+      this.selected.forEach(selection => {
+        if (!isNaN(selection)) {
+          if (parseInt(selection) === winningNumber) {
+            this.total += parseInt(this.betAmount) * 35; // 35x payout for exact number
+          } else {
+            this.total -= parseInt(this.betAmount);
+          }
+        } else if (selection === "EVEN" || selection === "ODD") {
+          if ((selection === "EVEN" && winningNumber % 2 === 0) || (selection === "ODD" && winningNumber % 2 !== 0)) {
+            this.total += parseInt(this.betAmount) * 2; // 2x payout for even/odd
+          } else {
+            this.total -= parseInt(this.betAmount);
+          }
+        } else if (selection === "RED" || selection === "BLACK") {
+          if (selection === winningColor) {
+            this.total += parseInt(this.betAmount) * 1.5; // 1.5x payout for color
+          } else {
+            this.total -= parseInt(this.betAmount);
           }
         }
-        // Lógica adicional para otros tipos de apuestas puede ser añadida aquí
-      } else {
-        // Lógica para manejar el caso de que no haya un número ganador
+      });
+
+      this.total = Math.round(this.total * 100) / 100; // Round to 2 decimal places
+      document.getElementById("money").innerText = `You Have ${this.total}$`;
+
+      sessionStorage.setItem('userData', JSON.stringify({ name: this.player, balance: this.total }));
+    },
+    saveBalance(action) {
+      if (action === 'continue') {
+        sessionStorage.setItem('userData', JSON.stringify({ name: this.player, balance: this.total }));
+      } else if (action === 'continueAndSave') {
+        // Replace 'this.$http.put' with your actual HTTP request method
+        // this.$http.put(`${apiUrl}/api/users/${this.player}`, { balance: this.total })
+        //   .then(response => {
+        //     console.log('Balance saved:', response.data);
+        //   })
+        //   .catch(error => {
+        //     console.error('Error saving balance:', error);
+        //   });
+        console.log("Balance saved:", this.total);
       }
-      document.getElementById("money").innerHTML = "You Have " + this.total + "$";
     }
-  },
-  data() {
-    return {
-      total: 1000,
-      selectedNumbers: new Set(),
-      selectedSpecial: new Set()
-    };
   }
 };
 </script>

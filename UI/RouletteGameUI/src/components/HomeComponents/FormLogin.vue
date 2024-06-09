@@ -14,7 +14,6 @@
       </form>
     </div>
   </template>
-  
   <script>
   const apiUrl = import.meta.env.VITE_API_URL;
   export default {
@@ -28,26 +27,35 @@
     },
     methods: {
       submitForm() {
-        // Por ejemplo, puedes enviar los datos a través de una petición HTTP
+         sessionStorage.setItem('userData', JSON.stringify(this.formData));
+         const userData = JSON.parse(sessionStorage.getItem('userData'));
+       
         fetch(`${apiUrl}/api/Roulette/initialize`, {
           method: 'POST',
-          body: JSON.stringify(this.formData),
+          body: JSON.stringify(userData),
           headers: {
             'Content-Type': 'application/json'
           }
         })
         .then(response => response.json())
         .then(data => {
+          sessionStorage.setItem('userData', JSON.stringify(data));
           console.log('Respuesta del servidor:', data);
         })
         .catch(error => {
           console.error('Error al enviar los datos:', error);
         });
+  
+       
+  
+        // Redirigir al usuario
         this.$router.push('/roulette');
       }
     }
   };
   </script>
+  
+
   
   <style scoped>
   h2 {

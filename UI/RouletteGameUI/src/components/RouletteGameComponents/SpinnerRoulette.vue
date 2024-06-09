@@ -1,13 +1,13 @@
+<!-- SpinnerRoulette.vue -->
 <template>
   <div>
-    <input type="button" value="Spin" @click="spin" style="float: left;" />
+    <input type="button" value="Spin" @click="spin" :disabled="!canSpin" style="float: left;" />
     <canvas ref="canvas" width="500" height="500"></canvas>
   </div>
 </template>
 
 <script>
 const apiUrl = import.meta.env.VITE_API_URL;
-console.log(apiUrl);
 export default {
   data() {
     return {
@@ -18,7 +18,8 @@ export default {
       spinArcStart: 10,
       spinTime: 0,
       spinTimeTotal: 0,
-      ctx: null
+      ctx: null,
+      canSpin: false
     };
   },
   methods: {
@@ -95,24 +96,20 @@ export default {
       }
     },
     async spin() {
+      if (!this.canSpin) return;
       try {
-        console.log(apiUrl)
         const response = await fetch(`${apiUrl}/api/Roulette/random`);
-        console.log('Response from API:', response.url);
-          const data = await response.json();
-          console.log('Data received from API:', data);
-          const winningNumber = data.number;
-          console.log('Winning number:', winningNumber);
-          this.spinAngleStart = Math.random() * 10 + 10;
-          this.spinTime = 0;
-          this.spinTimeTotal = Math.random() * 3 + 4 * 1000;
-          this.rotateWheel(winningNumber);
+        const data = await response.json();
+        const winningNumber = data.number;
+        this.spinAngleStart = Math.random() * 10 + 10;
+        this.spinTime = 0;
+        this.spinTimeTotal = Math.random() * 3 + 4 * 1000;
+        this.rotateWheel(winningNumber);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     },
     rotateWheel(winningNumber) {
-      console.log('rotateWheel called with winningNumber:', winningNumber);
       this.spinTime += 30;
       if (this.spinTime >= this.spinTimeTotal) {
         this.stopRotateWheel(winningNumber);
@@ -124,7 +121,6 @@ export default {
       this.spinTimeout = setTimeout(() => this.rotateWheel(winningNumber), 30);
     },
     stopRotateWheel(winningNumber) {
-      console.log('stopRotateWheel called with winningNumber:', winningNumber);
       clearTimeout(this.spinTimeout);
       const degrees = this.startAngle * 180 / Math.PI + 90;
       const arcd = this.arc * 180 / Math.PI;
@@ -132,7 +128,6 @@ export default {
       this.ctx.save();
       this.ctx.font = 'bold 30px Helvetica, Arial';
       const text = this.options[index];
-      console.log('Winning index:', index, 'Winning number:', winningNumber, 'Text:', text);
       this.ctx.fillText(winningNumber, 250 - this.ctx.measureText(winningNumber).width / 2, 250 + 10); // Mostrar el número ganador
       this.ctx.restore();
     },
