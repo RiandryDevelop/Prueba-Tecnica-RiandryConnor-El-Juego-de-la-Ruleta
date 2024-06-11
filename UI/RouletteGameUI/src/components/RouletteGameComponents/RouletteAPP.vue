@@ -26,7 +26,6 @@ export default defineComponent({
       canSpin.value = ready;
     };
 
-    
     onMounted(() => {
       const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
       player.value = userData.name;

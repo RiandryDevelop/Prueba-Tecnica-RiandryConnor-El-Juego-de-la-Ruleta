@@ -21,7 +21,7 @@ namespace RouletteGameAPI.Controllers
             }
             else
             {
-                existingUser.Balance += player.Balance;
+                existingUser.Balance = player.Balance;
                 _context.Entry(existingUser).State = EntityState.Modified;
             }
 
