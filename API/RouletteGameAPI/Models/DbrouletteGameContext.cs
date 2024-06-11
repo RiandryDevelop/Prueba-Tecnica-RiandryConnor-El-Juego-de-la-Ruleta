@@ -15,6 +15,7 @@ namespace RouletteGameAPI.Models
         }
 
         public virtual DbSet<Player> Players { get; set; }
+        public DbSet<BetRequest> Bets { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +40,18 @@ namespace RouletteGameAPI.Models
                 entity.Property(e => e.Name).HasMaxLength(100);
                 entity.Property(e => e.Balance).HasColumnType("decimal(18, 2)");
             });
+
+            modelBuilder.Entity<BetRequest>(entity =>
+            {
+                entity.HasKey(e => e.PlayerName); 
+
+                entity.Property(e => e.PlayerName).HasMaxLength(100);
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Color).HasMaxLength(50);
+                entity.Property(e => e.Number);
+                entity.Property(e => e.Type).HasMaxLength(50);
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }

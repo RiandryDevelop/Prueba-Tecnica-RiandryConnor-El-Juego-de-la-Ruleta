@@ -6,14 +6,9 @@ namespace RouletteGameAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController(DbrouletteGameContext context) : ControllerBase
     {
-        private readonly DbrouletteGameContext _context;
-
-        public UserController(DbrouletteGameContext context)
-        {
-            _context = context;
-        }
+        private readonly DbrouletteGameContext _context = context;
 
         [HttpPost("updateBalance")]
         public async Task<ActionResult> UpdateBalance([FromBody] Player player)
