@@ -15,7 +15,7 @@ export  const FormLoginService = (formData:IFormData, router: string[] | Router)
     try {
         sessionStorage.setItem('userData', JSON.stringify(formData));
         const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
-
+        console.log('User data:', JSON.stringify(userData));
         const response = await fetch(`${apiUrl}/api/Roulette/initialize`, {
         method: 'POST',
         body: JSON.stringify(userData),

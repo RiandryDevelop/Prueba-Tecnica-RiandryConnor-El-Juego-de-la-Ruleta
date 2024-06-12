@@ -1,12 +1,12 @@
-import { LooseRequired } from '@vue/shared';
 import {  Ref, onMounted, watchEffect } from 'vue';
+
 
 export const SpinnerRouletteService = (
   options: Ref<number[]>, startAngle: Ref<number>, arc: number, 
   spinTimeout: number | null | undefined, spinAngleStart: number,  
   spinTime: number, spinTimeTotal: number,
   canvas: Ref<HTMLCanvasElement | null>, 
-  ctx: CanvasRenderingContext2D | null, props: LooseRequired<{ readonly canSpin: boolean; } & {}>) =>{
+  ctx: CanvasRenderingContext2D | null, canSpinData: unknown) =>{
 
     const byte2Hex = (n: number): string => {
         const nybHexString = "0123456789ABCDEF";
@@ -69,7 +69,7 @@ export const SpinnerRouletteService = (
       };
   
       const spin = async () => {
-        if (!props.canSpin) return;
+        if(!canSpinData.value) return;
         try {
           const betData = JSON.parse(sessionStorage.getItem('betResult') || '{}');
           console.log("Spin Result", betData);
@@ -148,9 +148,9 @@ export const SpinnerRouletteService = (
         + -3 * ts + 3 * t);
       };
   
-  
-      if(props.canSpin) spin();
-  
+    
+    if(canSpinData) spin();
+
       onMounted(() => {
         drawRouletteWheel();
       });

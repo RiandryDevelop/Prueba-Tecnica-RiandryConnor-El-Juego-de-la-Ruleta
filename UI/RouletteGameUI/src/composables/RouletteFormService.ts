@@ -1,18 +1,10 @@
-import { LooseRequired } from '@vue/shared';
-import {  Ref, watchEffect } from 'vue';
-
+import {   Ref} from 'vue';
 
 const apiUrl = import.meta.env.VITE_API_URL;
-export const RouletteFormService =(selected: Ref<(string | number)[]>,betAmount: Ref<number>,total: Ref<number>,bet: Ref<any>, emit: { (event: "formReady", ...args: any[]): void; (arg0: string, arg1: boolean): void; }, grid: Ref<(string | number)[][]>, props: LooseRequired<{ readonly player: string; readonly balance: number; readonly onFormReady?: ((...args: any[]) => any) | undefined; } & {}>)=>{
-    emits: ['formReady']
-
-      watchEffect(() => {
-        setTimeout(() => {
-          emit('formReady', true);
-        },10000)  
-      });
-  
-      
+export const RouletteFormService =(selected: Ref<(string | number)[]>,
+betAmount: Ref<number>,
+total: Ref<number>,bet: Ref<any>, 
+store: { message: boolean; }, grid: Ref<(string | number)[][]>)=>{      
 
       const putMoney = (cell: number | string) => {
         if (!betAmount.value) {
@@ -54,11 +46,13 @@ export const RouletteFormService =(selected: Ref<(string | number)[]>,betAmount:
       };
   
       const checkWin = async () => {
+        
+        const playerName = JSON.parse(sessionStorage.getItem('userData') || '{}');
         try {
           const response = await fetch(`${apiUrl}/api/Roulette/bet`, {
             method: 'POST',
             body: JSON.stringify({
-              playerName: props.player,
+              playerName: playerName.name,
               amount: betAmount.value,
               color: bet.value.color,
               Number: bet.value.number,
@@ -69,38 +63,42 @@ export const RouletteFormService =(selected: Ref<(string | number)[]>,betAmount:
             },
           });
           const data = await response.json();
-          console.log('Server response:', data);
+          store.message = true;  
           sessionStorage.setItem("betResult", JSON.stringify(data));  
-          resetForm(); 
           total.value = data.newBalance;
+          resetForm(); 
+          
         } catch (error) {
           console.error('Error sending data:', error);
         } 
       };
   
-      const saveBalance = async (action: string) => {
-        const newBalance = JSON.parse(sessionStorage.getItem('betResult') || '{}');
-        await checkWin();
-        if (action === 'continueAndSave') {
+      const continueGame = async () => {
+          await checkWin();
+        }
+      const saveBalance = async() => {
+        const betResult = JSON.parse(sessionStorage.getItem('betResult') || '{}');
+        const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');        
           try {
             const response = await fetch(`${apiUrl}/api/User/updateBalance`, {
               method: 'POST',
               body: JSON.stringify({
-                name: props.player,
-                balance: newBalance.newBalance,
+                name: userData.name,
+                balance: betResult.newBalance,
               }),
               headers: {
                 'Content-Type': 'application/json',
               },
             });
+            
             const data = await response.json();
-            console.log('Server response data:', data);
+            console.log("saveBalance",data);
           } catch (error) {
             console.error('Error sending data:', error);
-          }
-        }
-      };
-  
+          }     
+      }
+
+      
       return {
         grid,
         selected,
@@ -109,6 +107,7 @@ export const RouletteFormService =(selected: Ref<(string | number)[]>,betAmount:
         bet,
         putMoney,
         updateCellStyle,
+        continueGame,
         saveBalance
       };
 }
