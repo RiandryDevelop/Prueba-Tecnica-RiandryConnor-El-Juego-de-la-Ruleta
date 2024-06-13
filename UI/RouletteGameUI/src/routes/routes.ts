@@ -1,6 +1,5 @@
-// router.ts
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-// RoutesRouletteAPP
+
 import HomePage from '../components/HomeComponents/HomePage.vue';
 import RouletteAPP from '../components/RouletteGameComponents/RouletteAPP.vue';
 
