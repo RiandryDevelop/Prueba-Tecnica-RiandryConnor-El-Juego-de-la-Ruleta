@@ -1,81 +1,83 @@
-import {  Ref, onMounted, watchEffect } from 'vue';
-
-
+import { Ref, onMounted, watchEffect } from 'vue';
+import { useStore } from '../helpers/store';
 export const SpinnerRouletteService = (
   options: Ref<number[]>, startAngle: Ref<number>, arc: number, 
   spinTimeout: number | null | undefined, spinAngleStart: number,  
   spinTime: number, spinTimeTotal: number,
   canvas: Ref<HTMLCanvasElement | null>, 
-  ctx: CanvasRenderingContext2D | null, canSpinData: unknown) =>{
+  ctx: CanvasRenderingContext2D | null
+) => {
+
+    const store = useStore();
 
     const byte2Hex = (n: number): string => {
         const nybHexString = "0123456789ABCDEF";
         return String(nybHexString.substr((n >> 4) & 0x0F, 1)) + nybHexString.substr(n & 0x0F, 1);
-      };
-  
-      const RGB2Color = (r: number, g: number, b: number): string => {
+    };
+
+    const RGB2Color = (r: number, g: number, b: number): string => {
         return '#' + byte2Hex(r) + byte2Hex(g) + byte2Hex(b);
-      };
-  
-      const getColor = (item: number, maxitem: number): string => {
+    };
+
+    const getColor = (item: number, maxitem: number): string => {
         const phase = 0;
         const center = 128;
         const width = 127;
         const frequency = Math.PI * 2 / maxitem;
-  
+
         const red = Math.sin(frequency * item + 2 + phase) * width + center;
         const green = Math.sin(frequency * item + 0 + phase) * width + center;
         const blue = Math.sin(frequency * item + 4 + phase) * width + center;
-  
+
         return RGB2Color(red, green, blue);
-      };
-  
-      const drawRouletteWheel = () => {
+    };
+
+    const drawRouletteWheel = () => {
         if (!canvas.value) return;
-        const outsideRadius = 200;
-        const textRadius = 160;
-        const insideRadius = 125;
-  
+        const outsideRadius = 400; // Increase size for larger wheel
+        const textRadius = 350; // Adjust text radius for larger text
+        const insideRadius = 300; // Adjust inside radius accordingly
+
         ctx = canvas.value.getContext('2d');
         if (!ctx) return;
-  
-        ctx.clearRect(0, 0, 500, 500);
+
+        ctx.clearRect(0, 0, 800, 800); // Clear larger canvas
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 2;
-        ctx.font = 'bold 12px Helvetica, Arial';
-  
+        ctx.font = 'bold 24px Helvetica, Arial'; // Increase font size
+
         for (let i = 0; i < options.value.length; i++) {
           const angle = startAngle.value + i * arc;
           ctx.fillStyle = getColor(i, options.value.length);
-  
+
           ctx.beginPath();
-          ctx.arc(250, 250, outsideRadius, angle, angle + arc, false);
-          ctx.arc(250, 250, insideRadius, angle + arc, angle, true);
+          ctx.arc(400, 400, outsideRadius, angle, angle + arc, false); // Adjust coordinates for larger wheel
+          ctx.arc(400, 400, insideRadius, angle + arc, angle, true); // Adjust coordinates for larger wheel
           ctx.stroke();
           ctx.fill();
-  
+
           ctx.save();
           ctx.shadowOffsetX = -1;
           ctx.shadowOffsetY = -1;
           ctx.shadowBlur = 0;
           ctx.shadowColor = 'rgb(220,220,220)';
           ctx.fillStyle = 'black';
-          ctx.translate(250 + Math.cos(angle + arc / 2) * textRadius, 250 + Math.sin(angle + arc / 2) * textRadius);
+          ctx.translate(400 + Math.cos(angle + arc / 2) * textRadius, 400 + Math.sin(angle + arc / 2) * textRadius);
           ctx.rotate(angle + arc / 2 + Math.PI / 2);
           const text = options.value[i].toString();
           ctx.fillText(text, -ctx.measureText(text).width / 2, 0);
           ctx.restore();
         }
-      };
-  
-      const spin = async () => {
-        if(!canSpinData.value) return;
+    };
+
+    const spin = async () => {
+        if (!store.canSpin) return;
         try {
           const betData = JSON.parse(sessionStorage.getItem('betResult') || '{}');
           console.log("Spin Result", betData);
           const winningColor = betData.generatedColor;
           const winningNumber = betData.generatedNumber;
-          
+
           spinAngleStart = Math.random() * 10 + 10;
           spinTime = 0;
           spinTimeTotal = (Math.random() * 3 + 4) * 1000;
@@ -83,9 +85,9 @@ export const SpinnerRouletteService = (
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-      };
-  
-      const rotateWheel = (winningNumber: number, winningColor: string) => {
+    };
+
+    const rotateWheel = (winningNumber: number, winningColor: string) => {
         spinTime += 30;
         if (spinTime >= spinTimeTotal) {
           stopRotateWheel(winningNumber, winningColor);
@@ -95,75 +97,79 @@ export const SpinnerRouletteService = (
         startAngle.value += (spinAngle * Math.PI / 180);
         drawRouletteWheel();
         spinTimeout = window.setTimeout(() => rotateWheel(winningNumber, winningColor), 30);
-        
-      };
-  
-      const stopRotateWheel = (winningNumber: number, winningColor: string) => {
+    };
+
+    const stopRotateWheel = (winningNumber: number = 100, winningColor: string = "white") => {
         if (spinTimeout) {
           clearTimeout(spinTimeout);
         }
         if (!ctx) return;
         ctx.save();
-        ctx.font = 'bold 30px Helvetica, Arial';
+        ctx.font = 'bold 56px Helvetica, Arial';
         if (!canvas.value) return;
-        const outsideRadius = 200;
-        const textRadius = 160;
-        const insideRadius = 125;
-  
+        const outsideRadius = 400;
+        const textRadius = 350;
+        const insideRadius = 300;
+
         ctx = canvas.value.getContext('2d');
         if (!ctx) return;
-  
-        ctx.clearRect(0, 0, 500, 500);
+
+        ctx.clearRect(0, 0, 800, 800);
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 2;
-        ctx.font = 'bold 12px Helvetica, Arial';
-  
+        ctx.font = 'bold 124px Helvetica, Arial';
+
         for (let i = 0; i < options.value.length; i++) {
           const angle = startAngle.value + i * arc;
-          ctx.fillStyle = winningColor;
+          ctx.fillStyle = winningColor || "white";
           ctx.beginPath();
-          ctx.arc(250, 250, outsideRadius, angle, angle + arc, false);
-          ctx.arc(250, 250, insideRadius, angle + arc, angle, true);
+          ctx.arc(400, 400, outsideRadius, angle, angle + arc, false);
+          ctx.arc(400, 400, insideRadius, angle + arc, angle, true);
           ctx.stroke();
           ctx.fill();
-  
+
           ctx.save();
           ctx.shadowOffsetX = -1;
           ctx.shadowOffsetY = -1;
           ctx.shadowBlur = 0;
           ctx.shadowColor = 'rgb(220,220,220)';
           ctx.fillStyle = 'black';
-          ctx.translate(250 + Math.cos(angle + arc / 2) * textRadius, 250 + Math.sin(angle + arc / 2) * textRadius);
+          ctx.translate(400 + Math.cos(angle + arc / 2) * textRadius, 400 + Math.sin(angle + arc / 2) * textRadius);
           ctx.rotate(angle + arc / 2 + Math.PI / 2);
           ctx.restore();
         }
-        ctx.fillText(winningNumber.toString(), 250 - ctx.measureText(winningNumber.toString()).width / 2, 250 + 10);
+        ctx.fillText(winningNumber.toString(), 400 - ctx.measureText(winningNumber.toString()).width / 2, 400 + 10);
         ctx.restore();
-      };
-  
-      const easeOut = (t: number, b: number, c: number, d: number): number => {
+    };
+
+    const easeOut = (t: number, b: number, c: number, d: number): number => {
         const ts = (t /= d) * t;
         const tc = ts * t;
-        return b + c * (tc
-        + -3 * ts + 3 * t);
-      };
-  
-    
-    if(canSpinData) spin();
+        return b + c * (tc + -3 * ts + 3 * t);
+    };
 
-      onMounted(() => {
+    if (store.canSpin) spin();
+
+    onMounted(() => {
         drawRouletteWheel();
-      });
+    });
+
+    watchEffect(() => {
+        const betData = JSON.parse(sessionStorage.getItem('betResult') || '{}');
+        const winningColor = betData.generatedColor;
+        const winningNumber = betData.generatedNumber;
+        rotateWheel(winningNumber, winningColor);
+        if (store.canSpin) {
+          spin();
+        }
   
-      watchEffect(() => {
-    const betData = JSON.parse(sessionStorage.getItem('betResult') || '{}');
-    const winningColor = betData.generatedColor;
-    const winningNumber = betData.generatedNumber;
-    rotateWheel(winningNumber, winningColor);
-  });
-  
-      return {
+        setTimeout(() => {
+          store.canSpin = false;
+        },1000)
+    });
+
+    return {
         canvas,
         spin
-      };
-}
+    };
+};

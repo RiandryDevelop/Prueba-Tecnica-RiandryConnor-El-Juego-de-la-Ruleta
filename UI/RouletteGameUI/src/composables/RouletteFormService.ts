@@ -1,10 +1,9 @@
 import {   Ref} from 'vue';
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL_PROD;
 export const RouletteFormService =(selected: Ref<(string | number)[]>,
 betAmount: Ref<number>,
-total: Ref<number>,bet: Ref<any>, 
-store: { message: boolean; }, grid: Ref<(string | number)[][]>)=>{      
+bet: Ref<any>, grid: Ref<(string | number)[][]>,store)=>{      
 
       const putMoney = (cell: number | string) => {
         if (!betAmount.value) {
@@ -28,7 +27,7 @@ store: { message: boolean; }, grid: Ref<(string | number)[][]>)=>{
         }
   
         selected.value.push(cell);
-        updateCellStyle(cell, 'gray');
+        updateCellStyle(cell, 'green');
       };
   
       const updateCellStyle = (cell: number | string, color: string) => {
@@ -43,10 +42,10 @@ store: { message: boolean; }, grid: Ref<(string | number)[][]>)=>{
         selected.value = [];
         bet.value = { number: null, type: '', color: '' };
         betAmount.value = 0;
+        // store.toggleState();
       };
   
       const checkWin = async () => {
-        
         const playerName = JSON.parse(sessionStorage.getItem('userData') || '{}');
         try {
           const response = await fetch(`${apiUrl}/api/Roulette/bet`, {
@@ -63,17 +62,22 @@ store: { message: boolean; }, grid: Ref<(string | number)[][]>)=>{
             },
           });
           const data = await response.json();
-          store.message = true;  
           sessionStorage.setItem("betResult", JSON.stringify(data));  
-          total.value = data.newBalance;
+          store.newBalance(data.newBalance);
+          store.saveState();
           resetForm(); 
-          
+         
         } catch (error) {
           console.error('Error sending data:', error);
         } 
       };
   
       const continueGame = async () => {
+        if (betAmount.value > store.balance) {
+          alert("You don't have enough balance to place this bet!");
+          return;
+        }
+          store.toggleSpin();
           await checkWin();
         }
       const saveBalance = async() => {
@@ -103,7 +107,6 @@ store: { message: boolean; }, grid: Ref<(string | number)[][]>)=>{
         grid,
         selected,
         betAmount,
-        total,
         bet,
         putMoney,
         updateCellStyle,

@@ -35,7 +35,7 @@ namespace RouletteGameAPI.Controllers
         private static (int, string) GenerateRandomNumberAndColor()
         {
             int number = random.Next(0, 37);
-            string color = number == 0 ? "green" : (random.Next(0, 21) % 2 == 0 ? "red" : "black");
+            string color = (random.Next(0, 21) % 2 == 0 ? "red" : "black");
             return (number, color);
         }
 
