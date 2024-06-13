@@ -12,7 +12,7 @@
             </div>
         </nav>
     </header>
-<main class="custom-background m-12">
+<main class="custom-background ">
   <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
     <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
       <RouletteRulesSection />

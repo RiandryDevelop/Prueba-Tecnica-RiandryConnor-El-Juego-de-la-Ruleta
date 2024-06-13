@@ -1,5 +1,5 @@
 import { Ref, onMounted, watchEffect } from 'vue';
-import { useStore } from '../helpers/store';
+import { useStore } from '../store/store';
 export const SpinnerRouletteService = (
   options: Ref<number[]>, startAngle: Ref<number>, arc: number, 
   spinTimeout: number | null | undefined, spinAngleStart: number,  
@@ -74,7 +74,6 @@ export const SpinnerRouletteService = (
         if (!store.canSpin) return;
         try {
           const betData = JSON.parse(sessionStorage.getItem('betResult') || '{}');
-          console.log("Spin Result", betData);
           const winningColor = betData.generatedColor;
           const winningNumber = betData.generatedNumber;
 
@@ -170,6 +169,7 @@ export const SpinnerRouletteService = (
 
     return {
         canvas,
-        spin
+        spin,
+        drawRouletteWheel
     };
 };

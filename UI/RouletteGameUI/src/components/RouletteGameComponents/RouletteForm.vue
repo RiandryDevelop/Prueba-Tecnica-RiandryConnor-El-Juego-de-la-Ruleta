@@ -1,13 +1,13 @@
 <template>
-  <div id="game" class="flex flex-col items-center justify-center min-h-screen p-4">
+  <div id="game" class="flex flex-col items-center  min-h-screen p-4">
     <table class="table-auto bg-white w-full max-w-full md:max-w-2xl rounded-lg shadow-lg border-separate border border-slate-400">
       <tbody>
-        <tr v-for="row in grid" :key="row[0]" class="flex flex-wrap">
+        <tr v-for="row in grid" :key="row[0]" class="flex">
           <td v-for="cell in row" :key="cell" :id="cell.toString()" @click="putMoney(cell)" class="border border-slate-300 py-3 px-4 text-lg md:text-lg cursor-pointer hover:bg-gray-200 transition-colors duration-300 flex-1">
             {{ cell }}
           </td>
         </tr>
-        <tr class="flex flex-wrap">
+        <tr class="flex ">
           <td id="money" colspan="3" class="text-center py-2 flex-1" :class="{ 'text-green-600': store.balance > 0, 'text-red-600': store.balance <=  0 }">
             {{ store.username }}, You Have {{ store.balance <= 0 ? "YOU ARE BROKE" : store.balance }}$
           </td>
@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent, ref , computed,  onMounted, onBeforeUpdate} from 'vue';
 import {RouletteFormService} from "../../composables/RouletteFormService"
-import { useStore } from '../../helpers/store';
+import { useStore } from '../../store/store';
 import {Grid} from "../../types/TRoulette"
 import { IBet } from "../../interfaces/IRoulette";
 
@@ -38,7 +38,6 @@ export default defineComponent({
   name: 'RouletteForm',
   setup() {
     const store =  useStore();
-    console.log("store balance",store.balance)
     const grid_s = ref<Grid>([
       [0, 1, 2, 3, 4, 5 ],
       [6, 7, 8, 9, 10,11],
@@ -60,10 +59,6 @@ export default defineComponent({
     
 onMounted(async() => {
    store.loadBalance()
-})
-
-onBeforeUpdate(async() => {
-  store.loadBalance()
 })
   
   const {
