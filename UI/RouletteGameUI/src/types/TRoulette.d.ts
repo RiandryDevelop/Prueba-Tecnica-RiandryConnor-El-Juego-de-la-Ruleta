@@ -1,6 +1,7 @@
-type Grid = (string | number)[][];
-
+type TGrid = (string | number)[][];
+type TresetForm = () => void
 
 export {
-    Grid
+    TGrid,
+    TresetForm
 }

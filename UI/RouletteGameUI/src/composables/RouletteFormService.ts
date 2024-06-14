@@ -1,6 +1,9 @@
 import { Store } from 'pinia';
 import { Ref } from 'vue';
 
+// Helpers functions
+import { MakeABet } from "../helpers/MakeBet";
+
 const apiUrl = import.meta.env.VITE_API_URL_PROD;
 
 export const RouletteFormService = (
@@ -54,45 +57,14 @@ export const RouletteFormService = (
     betAmount.value = 0;
   };
 
-  const checkWin = async () => {
-    const playerName = JSON.parse(sessionStorage.getItem('userData') || '{}').name;
-
-    if (!playerName) {
-      console.error('Player name not found in session storage.');
-      return;
-    }
-
-    try {
-      const response = await fetch(`${apiUrl}/api/Roulette/bet`, {
-        method: 'POST',
-        body: JSON.stringify({
-          playerName,
-          amount: betAmount.value,
-          color: bet.value.color,
-          number: bet.value.number,
-          type: bet.value.type,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      sessionStorage.setItem('betResult', JSON.stringify(data));
-
-      setTimeout(() => {
-        store.newBalance();
-        store.saveState();
-        resetForm();
-        alert(data.prize >= 1 ? `You won ${data.prize}!` : `You lose! ${data.prize}`);
-      }, 2000);
-    } catch (error) {
-      console.error('Error sending data:', error);
-    }
+  const checkWin = async (betAmount: Ref<number>,bet: Ref<{
+      number: number | null; type: "" | "EVEN" | "ODD"; color: // Helpers functions
+        "" | "RED" | "BLACK";
+    }>, apiUrl: any, store: Store<"spinner", {
+      canSpin: boolean; balance: number; username // Helpers functions
+        : string;
+    }, {}, { toggleSpin(): void; newBalance(newBalance: number): void; saveState(): void; loadBalance(): Promise<void>; }>,resetForm: { (): void; (): void; }) => {
+    MakeABet(betAmount, bet, apiUrl, store, resetForm);
   };
 
   const continueGame = async () => {
@@ -102,7 +74,7 @@ export const RouletteFormService = (
     }
 
     store.toggleSpin();
-    await checkWin();
+    await checkWin(betAmount,bet, apiUrl, store,resetForm);
   };
 
   const saveBalance = async () => {

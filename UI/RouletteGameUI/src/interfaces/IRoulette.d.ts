@@ -9,9 +9,16 @@
     color: 'RED' | 'BLACK' | '';
   }
   
-  
+  interface IStore {
+    
+  } 
+  interface IBetAmount  { value: number; }
+
+
 
   export {
     IFormData,
-    IBet
+    IBet,
+    IStore,
+    IBetAmount
   }
