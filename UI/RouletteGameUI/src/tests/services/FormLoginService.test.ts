@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { FormLoginService } from '../../composables/FormLoginService';
 import { IFormData } from '../../interfaces/IRoulette';
 import { describe, expect, it, vitest } from 'vitest';
@@ -7,7 +6,7 @@ import { Router } from 'vue-router';
 describe('FormLoginService', () => {
   it('isFormComplete returns correct value', () => {
     const formData: IFormData = { name: 'User', balance: 100 };
-    const router: Router | string[] = [];
+    const router: string[] | Router = [];
     const service = FormLoginService(formData, router);
     expect(service.isFormComplete.value).toBe(true);
   });

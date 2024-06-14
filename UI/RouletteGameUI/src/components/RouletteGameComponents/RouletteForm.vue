@@ -26,10 +26,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref , computed,  onMounted, onBeforeUpdate} from 'vue';
+import { defineComponent, ref , computed,  onMounted} from 'vue';
 import {RouletteFormService} from "../../composables/RouletteFormService"
 import { useStore } from '../../store/store';
-import {Grid} from "../../types/TRoulette"
+import {TGrid} from "../../types/TRoulette"
 import { IBet } from "../../interfaces/IRoulette";
 
 
@@ -38,7 +38,7 @@ export default defineComponent({
   name: 'RouletteForm',
   setup() {
     const store =  useStore();
-    const grid_s = ref<Grid>([
+    const grid_s = ref<TGrid>([
       [0, 1, 2, 3, 4, 5 ],
       [6, 7, 8, 9, 10,11],
       [12,13,14,15,16,17],

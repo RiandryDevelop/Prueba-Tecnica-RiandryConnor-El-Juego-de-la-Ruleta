@@ -2,7 +2,7 @@ import { Store } from 'pinia';
 import { IBet, IBetAmount } from '../interfaces/IRoulette';
 import { TresetForm } from '../types/TRoulette';
 
-export const MakeABet = async(betAmount:IBetAmount,bet: IBet, apiUrl: any, store: Store<"spinner", { canSpin: boolean; balance: number; username: string; }, {}, { toggleSpin(): void; newBalance(newBalance: number): void; saveState(): void; loadBalance(): Promise<void>; }>,resetForm:TresetForm ) =>{
+export const MakeABet = async(betAmount:IBetAmount,bet: IBet, apiUrl: any, store: Store<"spinner", { canSpin: boolean; balance: number; username: string; }, {}, { toggleSpin(): void; newBalance(): void; saveState(): void; loadBalance(): Promise<void>; }>,resetForm:TresetForm ) =>{
     const playerName = JSON.parse(sessionStorage.getItem('userData') || '{}').name;
 
     if (!playerName) {

@@ -29,6 +29,6 @@ describe('App.vue', () => {
     // Necesario para asegurarse de que el router esté listo
     await router.isReady();
     
-    expect(wrapper.toBeDefined('router-view').exists()).toBe(true);
+    expect(wrapper.find('router-view').exists()).toBe(true);
   });
 });

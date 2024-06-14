@@ -31,7 +31,7 @@ describe('Store', () => {
 
   it('newBalance sets balance correctly', () => {
     const store = useStore();
-    store.newBalance(200);
+    store.newBalance();
     expect(store.balance).toBe(200);
   });
 
