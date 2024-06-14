@@ -1,17 +1,40 @@
-# Roulette Game Frontend
+# Roulette Game Project
 
 ## Overview
 
-This frontend application is built with Vue 3 and Pinia for state management. It serves as the client-side interface for a Roulette game, allowing users to place bets, spin the roulette wheel, and see the results.
+The Roulette Game project is a comprehensive application comprising a frontend built with Vue 3 and Pinia for state management, and a backend API built using ASP.NET Core and Entity Framework Core. The project allows users to place bets, spin the roulette wheel, and manage their balances. 
 
-## Prerequisites
+## Table of Contents
+
+- [Overview](#overview)
+- [Frontend](#frontend)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Setup](#setup)
+  - [Usage](#usage)
+  - [Project Structure](#project-structure)
+- [Backend API](#backend-api)
+  - [Prerequisites](#prerequisites-1)
+  - [Installation](#installation-1)
+  - [Configuration](#configuration)
+  - [Usage](#usage-1)
+  - [Project Structure](#project-structure-1)
+  - [Testing](#testing)
+  - [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+## Frontend
+
+### Prerequisites
 
 Before you begin, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (v14 or higher)
 - [npm](https://www.npmjs.com/) (v6 or higher) or [Yarn](https://yarnpkg.com/) (v1.22 or higher)
 
-## Installation
+### Installation
 
 1. **Clone the repository:**
 
@@ -34,7 +57,7 @@ Before you begin, ensure you have the following installed:
    yarn install
    ```
 
-## Setup
+### Setup
 
 1. **Environment Variables:**
 
@@ -60,7 +83,7 @@ Before you begin, ensure you have the following installed:
 
    The application will be available at `http://localhost:3000`.
 
-## Usage
+### Usage
 
 1. **Start the Application:**
 
@@ -88,7 +111,7 @@ Before you begin, ensure you have the following installed:
 
    - Click on the "Get out" button in the top right corner to log out of the game.
 
-## Project Structure
+### Project Structure
 
 - **main.ts:** Entry point of the application where Vue instance is created and configured.
 - **App.vue:** Root component that sets up the router view.
@@ -101,6 +124,88 @@ Before you begin, ensure you have the following installed:
 - **components/SpinnerRoulette.vue:** Component for displaying and spinning the roulette wheel.
 - **components/RouletteRulesSection.vue:** Component displaying the game rules.
 - **components/FormLogin.vue:** Login form for starting the game.
+
+## Backend API
+
+### Prerequisites
+
+- .NET SDK
+- SQL Server
+- Docker (optional, for containerized deployment)
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
+
+2. **Restore dependencies:**
+
+   ```bash
+   dotnet restore
+   ```
+
+### Configuration
+
+#### Environment Variables
+
+The following environment variables are required for configuring the project:
+
+- `DB_CONNECTION_STRING`: Connection string to the SQL Server database.
+- `ASPNETCORE_ENVIRONMENT`: Execution environment (Development, Staging, Production).
+
+#### Database Configuration
+
+1. **Create the database.**
+2. **Apply migrations:**
+
+   ```bash
+   dotnet ef database update
+   ```
+
+### Usage
+
+#### Examples of Use
+
+Some examples of how to interact with the API.
+
+#### Main Endpoints
+
+- `POST /api/user/updateBalance`: Updates the balance of a user.
+- `GET /api/user/{name}`: Retrieves the balance of a user.
+- `POST /api/roulette/initialize`: Initializes a player.
+- `POST /api/roulette/bet`: Places a bet.
+
+### Project Structure
+
+- **Controllers/:** API controllers.
+- **Models/:** Data models.
+- **Data/:** Database context and migrations.
+- **Program.cs:** Application entry point.
+
+### Testing
+
+#### How to Run Tests
+
+```bash
+dotnet test
+```
+
+### Deployment
+
+#### Steps for Production Deployment
+
+1. **Build the project:**
+
+   ```bash
+   dotnet publish --configuration Release
+   ```
+
+2. **Configure the production server.**
+3. **Deploy the published files.**
 
 ## Contributing
 
@@ -128,8 +233,13 @@ Before you begin, ensure you have the following installed:
 
 ## License
 
-<<<<<<< HEAD
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-=======
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
->>>>>>> 802dcc28fc46f2453fdb5ac77ab0728a63489cfa
+
+## Contact
+
+Author: Riandry Dev  
+Email: riandrydevsoffers@gmail.com
+
+---
+
+This README file provides a comprehensive guide to understanding, setting up, using, and contributing to the Roulette Game project. For any further questions or issues, please refer to the source code or contact the maintainer of this project.
