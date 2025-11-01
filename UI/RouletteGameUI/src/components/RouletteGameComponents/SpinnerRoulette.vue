@@ -2,17 +2,17 @@
   <div
     class="relative flex items-center justify-center p-6 bg-gradient-to-br from-gray-900 via-black to-gray-950 rounded-2xl shadow-2xl border border-gray-800/70 backdrop-blur-md overflow-hidden"
   >
-    <!-- Glow efecto circular -->
+    <!-- Glow circular effect -->
     <div
       class="absolute inset-0 rounded-full bg-gradient-to-r from-green-400 via-emerald-500 to-cyan-400 opacity-20 blur-2xl"
     ></div>
 
-    <!-- Halo exterior animado -->
+    <!-- Animated outer halo -->
     <div
       class="absolute w-[860px] h-[860px] rounded-full border-4 border-emerald-400/30 animate-pulse-slow"
     ></div>
 
-    <!-- Contenedor Canvas -->
+    <!-- Canvas Container -->
     <div class="relative z-10 flex flex-col items-center justify-center">
       <canvas
         ref="canvas"

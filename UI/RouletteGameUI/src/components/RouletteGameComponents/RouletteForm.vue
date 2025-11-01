@@ -8,7 +8,7 @@
     >
       <table class="table-auto w-full border-collapse">
         <tbody>
-          <!-- 🎲 CELDAS DE LA RULETA -->
+          <!-- ROULETTE CELLS -->
           <tr
             v-for="row in grid"
             :key="row[0]"
@@ -27,7 +27,7 @@
             </td>
           </tr>
 
-          <!-- 🧾 INFORMACIÓN DEL JUGADOR -->
+          <!-- PLAYER INFORMATION -->
           <tr class="flex flex-wrap items-center items-stretch justify-between border-t border-gray-700 bg-gray-900/60 mt-4 px-4 py-3 rounded-b-xl">
             <td
               id="money"
@@ -45,7 +45,7 @@
               <span v-else class="font-semibold">YOU ARE BROKE 💀</span>
             </td>
 
-<!-- 💵 APUESTA -->
+<!-- BET -->
 <td id="bet" colspan="3" class="py-4 flex flex-col justify-center flex-1 space-y-2">
   <label
     for="bet"
@@ -69,7 +69,7 @@
   />
 </td>
 
-<!-- 🎮 BOTONES DE CONTROL -->
+<!-- 🎮 BUTTONS CONTROLLERS -->
 <td colspan="3" class="py-4 flex flex-col items-center justify-center space-y-3">
   <button
     :disabled="!isReady"
