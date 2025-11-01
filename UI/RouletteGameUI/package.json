@@ -8,7 +8,7 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "build-force":"vite build"
+    "build-force": "vite build"
   },
   "dependencies": {
     "autoprefixer": "^10.4.19",
@@ -22,6 +22,7 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
+    "@types/estree": "^1.0.6",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/test-utils": "^2.4.6",
     "typescript": "^5.2.2",
