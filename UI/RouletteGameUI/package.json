@@ -27,7 +27,7 @@
     "@vue/test-utils": "^2.4.6",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
-    "vitest": "^1.6.0",
+    "vitest": "^1.6.1",
     "vue-tsc": "^2.0.6"
   }
 }
